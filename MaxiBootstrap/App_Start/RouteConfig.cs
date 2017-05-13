@@ -17,7 +17,7 @@ namespace MaxiBootstrap
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = csProp.isWeb_Controllers, action = csProp.isWeb_IndexViews, id = UrlParameter.Optional }
+                defaults: new { controller = CsProp.isWeb_Controllers, action = CsProp.isWeb_IndexViews, id = UrlParameter.Optional }
             );
         }
     }
