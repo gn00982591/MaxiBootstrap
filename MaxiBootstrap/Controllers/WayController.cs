@@ -13,24 +13,21 @@ namespace MaxiBootstrap.Controllers
     {
         public ActionResult Login(string id_token)
         {
-            ViewBag.Msg = "";
             if (string.IsNullOrWhiteSpace(id_token)) { return View(); }
-
-            try
+            using (var client = new HttpClient())
             {
-                using (var client = new HttpClient())
+                var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("id_token", id_token), });
+                var result = client.PostAsync("https://www.googleapis.com/oauth2/v3/tokeninfo", content).Result;
+                var resultContent = result.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<CsGoogleOAuth>(resultContent);
+                if (data.email_verified && data.azp == CsProp.isOAuth_ClientID)
                 {
-                    var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("id_token", id_token), });
-
-                    var result = client.PostAsync("https://www.googleapis.com/oauth2/v3/tokeninfo", content).Result;
-                    var resultContent = result.Content.ReadAsStringAsync().Result;
-                    var data = JsonConvert.DeserializeObject<CsGoogleOAuth>(resultContent);
-                    ViewBag.Msg = resultContent;
-                    if (data.email_verified) { return RedirectToAction(CsProp.isWeb_IndexViews, CsProp.isWeb_Controllers); }
-                    return View();
+                    /*cookie確認*/
+                    /*登入帳號確認*/
+                    return RedirectToAction(CsProp.isWeb_IndexViews, CsProp.isWeb_Controllers);
                 }
             }
-            catch { return View(); }
+            return Redirect("https://www.google.com.tw/");
         }
 
         public ActionResult Index() { return View(); }

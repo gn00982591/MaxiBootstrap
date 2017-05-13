@@ -35,8 +35,8 @@
                                 <span id="btnwhy">"Why?"</span> Haha...
                             </p>
                         </div>
-                        @(ViewBag.Msg)
-                        <form id="frm" name="frm" method="post" >
+                        @(ViewBag.R)
+                        <form id="frm" name="frm" method="post">
                             <input type="hidden" name="id_token" id="id_token" />
                         </form>
                     </div>
@@ -55,6 +55,7 @@
         $(window).on("load", function () {
             $("#id_token").val("");
         });
+
         function onSignIn(googleUser) {
             $("#id_token").val("");
             $("#id_token").val(googleUser.getAuthResponse().id_token);
