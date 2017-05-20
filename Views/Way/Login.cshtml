@@ -56,9 +56,7 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     @Scripts.Render("~/bundles/jquery")
     <script>
-        $(window).on("load", function () {
-            $("#id_token").val("");
-        });
+        $(window).on("load", function () { $("#id_token").val(""); });
 
         function onSignIn(googleUser) {
             $("#id_token").val("");
