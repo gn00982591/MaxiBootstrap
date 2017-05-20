@@ -1,11 +1,4 @@
-﻿@using MaxiBootstrap.Models;
-@{
-    var mus = HttpContext.Current.getLoginUser();
-    var isR = true;
-    if (mus == null)
-    { Response.Redirect($"~/{CsProp.isWeb_Controllers}/{CsProp.isWeb_LoginViews}"); isR = false; }
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-tw">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,117 +13,43 @@
 </head>
 <body data-default-background-img="/Content/twilli/bg5.jpg" data-overlay="true" data-overlay-opacity="0.35">
     <div id="outer-container">
+
         <!-- Left Sidebar -->
         <section id="left-sidebar">
+
             <div class="logo">
-                <h3>
-                    <a href="@(Url.Content($"~/{CsProp.isWeb_Controllers}/{CsProp.isWeb_IndexViews}"))" class="link-scroll">機車物語</a>
-                </h3>
-            </div>
+                <a href="#intro" class="link-scroll"><img src="/Content/twilli/logo.png" alt="Twilli Air"></a>
+            </div><!-- .logo -->
             <!-- Menu Icon for smaller viewports -->
             <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();">
                 <span class="glyphicon glyphicon-th"></span>
             </div>
+
             <ul id="main-menu">
-                @{
-                    if (mus != null)
-                    {
+                <li id="menu-item-text" class="menu-item scroll">
+                    <a href="#text">Text</a>
+                </li>
+                <li id="menu-item-carousel" class="menu-item scroll">
+                    <a href="#carousel">Carousel</a>
+                </li>
+                <li id="menu-item-grid" class="menu-item scroll">
+                    <a href="#grid">Grid</a>
+                </li>
+                <li id="menu-item-featured" class="menu-item scroll">
+                    <a href="#featured">Featured</a>
+                </li>
+                <li id="menu-item-tabs" class="menu-item scroll">
+                    <a href="#tabs">Tabs</a>
+                </li>
+                <li id="menu-item-contact" class="menu-item scroll">
+                    <a href="#contact">Contact</a>
+                </li>
+            </ul><!-- #main-menu -->
 
-                        using (var db = CsFunc.DBExtend())
-                        {
-                            var liup = db.SYS_M_Url.Where(g => g.cenable && (g.cupseq < 0 || db.SYS_R_Auth.FirstOrDefault(x => x.cenable && x.caccountseq == mus.cseq && x.curlseq == g.cseq) != null)).ToArray();
-                            /*頁面權限判斷*/
-                            if (isR)
-                            {
-                                var ControllerName = this.ViewContext.ControllerName();
-                                var ActionName = this.ViewContext.ActionName();
-                                if (liup.FirstOrDefault(g => g.ccontrollers.ToStringUpper() == ControllerName && g.cview.ToStringUpper() == ActionName) == null)
-                                {
-                                    Response.Redirect($"~/{CsProp.isWeb_Controllers}/{CsProp.isWeb_IndexViews}?{CsProp.isWeb_Title}={Server.UrlEncode("無此路徑")}");
-                                }
-                            }
-                            foreach (var i in liup.Where(g => g.cenable && new[] { -1, 0 }.Contains(g.cupseq)))
-                            {
-                                <li class="menu-item scroll">
-                                    <a href="@(Url.Content($"~/{i.ccontrollers}/{i.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(i.cname)}"))">﹎&nbsp;@(i.cname)&nbsp;﹎</a>
-                                </li>
-                                foreach (var g in liup.Where(g => g.cenable && g.cupseq == i.cseq))
-                                {
-                                    <li class="menu-item scroll">
-                                        <a href="@(Url.Content($"~/{g.ccontrollers}/{g.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(g.cname)}"))">@(g.cname)</a>
-                                    </li>
-                                }
-                                <li id="menu-item-text" class="menu-item scroll">
-                                    <a></a>
-                                </li>
-                            }
-                        }
-                    }
-                }
-            </ul>
-        </section>
+        </section><!-- #left-sidebar -->
         <!-- end: Left Sidebar -->
+
         <section id="main-content" class="clearfix">
-            @RenderBody()
-            <article id="tabs" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg7.jpg">
-                <div class="content-wrapper mid-vertical-positioning clearfix">
-                    <div class="col-sm-10 col-md-9 pull-right">
-                        <h1 class="section-title">@(HttpUtility.UrlDecode(HttpContext.Current.Request[CsProp.isWeb_Title] ?? "", System.Text.Encoding.UTF8))</h1>
-
-                        <div class="tabpanel styled-tabs uniform-height" role="tabpanel">
-                           
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist" text-hidden-xs="true">
-                                <li role="presentation" class="active">
-                                    <a href="#tabs-tab1" aria-controls="tabs-tab1" role="tab" data-toggle="tab"><i class="icon fa fa-diamond"></i><span>Donec</span></a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="#tabs-tab2" aria-controls="tabs-tab2" role="tab" data-toggle="tab"><i class="icon fa fa-train"></i><span>Maecenas</span></a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="#tabs-tab3" aria-controls="tabs-tab3" role="tab" data-toggle="tab"><i class="icon fa fa-coffee"></i><span>Iaculis</span></a>
-                                </li>
-                                <li role="presentation">
-                                    <a href="#tabs-tab4" aria-controls="tabs-tab4" role="tab" data-toggle="tab"><i class="icon fa fa-comment"></i><span>Quisque</span></a>
-                                </li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-
-                                <div role="tabpanel" class="tab-pane fade in active" id="tabs-tab1">
-                                    <img src="/Content/twilli/tabs-icon4.png" class="pull-right hidden-xs">
-                                    <h4>Donec nec magna condimentum</h4>
-                                    <p>Uspendisse molestie lorem odio, sit amet. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio. Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo. Pellentesque sed malesuada turpis. Quisque eget lacus sit amet dui.</p>
-                                    <p>Ut pretium sapien dui, id facilisis metus interdum pharetra. Totam rem aperiam, eaque ipsa quae ab illo inventore.</p>
-                                </div>
-
-                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab2">
-                                    <img src="/Content/twilli/tabs-icon3.png" class="pull-right hidden-xs">
-                                    <h4>Maecenas rhoncus tortor nec mi congue</h4>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio.</p>
-                                </div>
-
-                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab3">
-                                    <img src="/Content/twilli/tabs-icon2.png" class="pull-right hidden-xs">
-                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h4>
-                                    <p>Nunc accumsan sapien eu tortor fringilla, et condimentum metus pellentesque. Maecenas rhoncus tortor nec mi congue aliquet. Integer eu turpis scelerisque, iaculis magna non, tempor sem. Quisque consectetur nisi eu felis euismod, sit amet faucibus justo molestie. Ut pretium sapien dui, id facilisis metus interdum pharetra.</p>
-                                </div>
-
-                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab4">
-                                    <img src="/Content/twilli/tabs-icon1.png" class="pull-right hidden-xs">
-                                    <h4>Quisque consectetur nisi</h4>
-                                    <p>Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo aliquam vulputate. Ut eget orci in sapien commodo fringilla. Maecenas rhoncus tortor nec mi congue aliquet. Integer eu turpis scelerisque, iaculis magna non, tempor sem.</p>
-                                    <p>Integer eu turpis scelerisque, iaculis magna non.</p>
-                                </div>
-
-                            </div><!-- .tab-content -->
-
-                        </div><!-- .tabpanel -->
-
-                    </div><!-- .col-sm-10 -->
-                </div><!-- .content-wrapper -->
-            </article><!-- .section-wrapper -->
 
             <article id="intro" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg5.jpg">
                 <div class="content-wrapper clearfix wow fadeInDown" data-wow-delay="0.3s">
@@ -469,7 +388,68 @@
 
                     </div><!-- .col-sm-10 -->
                 </div><!-- .content-wrapper -->
-            </article><!-- .section-wrapper -->           
+            </article><!-- .section-wrapper -->
+
+            <article id="tabs" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg7.jpg">
+                <div class="content-wrapper mid-vertical-positioning clearfix">
+                    <div class="col-sm-10 col-md-9 pull-right">
+
+                        <h1 class="section-title">Tabs</h1>
+
+                        <div class="tabpanel styled-tabs uniform-height" role="tabpanel">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist" text-hidden-xs="true">
+                                <li role="presentation" class="active">
+                                    <a href="#tabs-tab1" aria-controls="tabs-tab1" role="tab" data-toggle="tab"><i class="icon fa fa-diamond"></i><span>Donec</span></a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#tabs-tab2" aria-controls="tabs-tab2" role="tab" data-toggle="tab"><i class="icon fa fa-train"></i><span>Maecenas</span></a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#tabs-tab3" aria-controls="tabs-tab3" role="tab" data-toggle="tab"><i class="icon fa fa-coffee"></i><span>Iaculis</span></a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#tabs-tab4" aria-controls="tabs-tab4" role="tab" data-toggle="tab"><i class="icon fa fa-comment"></i><span>Quisque</span></a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div role="tabpanel" class="tab-pane fade in active" id="tabs-tab1">
+                                    <img src="/Content/twilli/tabs-icon4.png" class="pull-right hidden-xs">
+                                    <h4>Donec nec magna condimentum</h4>
+                                    <p>Uspendisse molestie lorem odio, sit amet. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio. Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo. Pellentesque sed malesuada turpis. Quisque eget lacus sit amet dui.</p>
+                                    <p>Ut pretium sapien dui, id facilisis metus interdum pharetra. Totam rem aperiam, eaque ipsa quae ab illo inventore.</p>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab2">
+                                    <img src="/Content/twilli/tabs-icon3.png" class="pull-right hidden-xs">
+                                    <h4>Maecenas rhoncus tortor nec mi congue</h4>
+                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio.</p>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab3">
+                                    <img src="/Content/twilli/tabs-icon2.png" class="pull-right hidden-xs">
+                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h4>
+                                    <p>Nunc accumsan sapien eu tortor fringilla, et condimentum metus pellentesque. Maecenas rhoncus tortor nec mi congue aliquet. Integer eu turpis scelerisque, iaculis magna non, tempor sem. Quisque consectetur nisi eu felis euismod, sit amet faucibus justo molestie. Ut pretium sapien dui, id facilisis metus interdum pharetra.</p>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane fade" id="tabs-tab4">
+                                    <img src="/Content/twilli/tabs-icon1.png" class="pull-right hidden-xs">
+                                    <h4>Quisque consectetur nisi</h4>
+                                    <p>Etiam scelerisque lacus tempor, rhoncus diam vel, gravida felis. Fusce tristique sem et leo aliquam vulputate. Ut eget orci in sapien commodo fringilla. Maecenas rhoncus tortor nec mi congue aliquet. Integer eu turpis scelerisque, iaculis magna non, tempor sem.</p>
+                                    <p>Integer eu turpis scelerisque, iaculis magna non.</p>
+                                </div>
+
+                            </div><!-- .tab-content -->
+
+                        </div><!-- .tabpanel -->
+
+                    </div><!-- .col-sm-10 -->
+                </div><!-- .content-wrapper -->
+            </article><!-- .section-wrapper -->
 
             <article id="contact" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg4.jpg">
                 <div class="content-wrapper clearfix">
@@ -491,7 +471,8 @@
                     </div>
                     <!-- END: CONTACT DETAILS -->
                     <!-- CONTACT FORM -->
-                    <div class="col-sm-7 col-md-9">                       
+                    <div class="col-sm-7 col-md-9">
+                        @RenderBody()
                         <!-- IMPORTANT: change the email address at the top of the assets/php/mail.php file to the email address that you want this form to send to -->
                         <form class="form-style validate-form clearfix" action="mail.php" method="POST" role="form">
 
@@ -552,7 +533,7 @@
             </ul>
 
             <!-- copyright text -->
-            <div class="footer-text-line">&copy; Copy 2017-@(DateTime.Now.ToTwDateTime().Year) MaximusChang</div>
+            <div class="footer-text-line">&copy; 2015 Twilli | Air</div>
         </section>
         <!-- end: Footer -->
 
