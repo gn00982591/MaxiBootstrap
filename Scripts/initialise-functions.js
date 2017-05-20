@@ -223,7 +223,6 @@ function initialise_window_load_functions()
 }
 // end: initialise_window_load_functions()
 
-$(window).load(function()
-{
+$(window).on('load', function () {
     initialise_window_load_functions();
 });
