@@ -1,0 +1,70 @@
+﻿
+@{Layout = null;}
+@using MaxiBootstrap.Models;
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="cache-control" content="no-cache">
+    <link href="/Content/images/icon.ico" rel="shortcut icon" />
+    <title>機車物語</title>
+    <meta name="description" content="Maxi Bootstrap" />
+    @Styles.Render("~/Content/logincss")
+    <link href="~/Content/way.css" rel="stylesheet" />
+    <meta name="google-signin-client_id" content="@(CsProp.isOAuth_ClientID)">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="coming-soon">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 shadow">
+                        <div class="site-title">
+                            <h1>機車物語</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2 shadow">
+                        <div class="site-lead">
+                            <p>&nbsp;&nbsp;這裡是某個碼農在閒暇之餘做出來的娛樂，裡有有點玩樂的性質，有點實驗的性質。將自已所學、想學實作出來的網站。</p>
+                            <p>&nbsp;&nbsp;到這裡為止，已經是第三個已經有一定經驗值所累下來的結果，在架構規劃也呈現比以前成熟。</p>
+                            <p>&nbsp;&nbsp;如果有機會，請體驗一下！</p>
+                            <p>&nbsp;&nbsp;</p>
+                            <p>&nbsp;&nbsp;至於為什麼叫「機車物語」？</p>
+                            <p>&nbsp;&nbsp;平常使用機車代步，過程冗長，不由得會想東想西。想碼田的規劃、左前方騎士的作為、紅綠燈的發想…諸如此類，天馬行空的內心小劇場。</p>
+                        </div>
+                        <form id="frm" name="frm" method="post">
+                            <input type="hidden" name="id_token" id="id_token" />
+                        </form>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            <a class="scroll-down"><i class="fa fa-angle-double-down"></i></a>
+                            <a class="scroll-down g-signin2" data-onsuccess="onSignIn" style="width:36px;"></a>
+                            <a class="scroll-down"><i class="fa fa-angle-double-down"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mastfoot text-center">
+            @{Html.RenderPartial("~/Views/PARTVIEW/_CopyRight.cshtml"); }
+        </div>
+    </div>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+        $(window).on("load", function () {
+            $("#id_token").val("");
+        });
+
+        function onSignIn(googleUser) {
+            $("#id_token").val("");
+            $("#id_token").val(googleUser.getAuthResponse().id_token);
+            if ($("#id_token").val() != "") { $("#frm").submit(); }
+        }
+    </script>
+</body>
+</html>
