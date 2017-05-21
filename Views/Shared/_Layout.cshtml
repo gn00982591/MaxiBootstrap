@@ -18,7 +18,7 @@
     <meta name="description" content="Maxi Bootstrap" />
     @Styles.Render("~/Content/css")
 </head>
-<body data-default-background-img="/Content/twilli/bg5.jpg" data-overlay="true" data-overlay-opacity="0.35">
+<body data-overlay="true" data-overlay-opacity="0.35">
     <div id="outer-container">
         <!-- Left Sidebar -->
         <section id="left-sidebar">
@@ -111,6 +111,7 @@
     @RenderSection("scripts", required: false)
     <script>
         $(window).on("load", function () {
+            $("body", document).attr("data-default-background-img", "/Content/twilli/bg5.jpg");
             $.post("@Url.Content("~/Select/S_Stock")").done(function (d) {
                 if (!d.length) { return; }
                 for (var i in d) {
