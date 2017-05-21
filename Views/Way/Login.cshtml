@@ -62,6 +62,7 @@
     <script>
         $(window).on("load", function () {
             $("#toindex").fadeOut();
+            $("body", document).css("background-image",'url(@Url.Content("~/Content/images/cssLgoinBg.jpg"))');
             $("#toindex").click(function () { $("#frm").submit(); });
         });
         function onSignIn(googleUser) {
