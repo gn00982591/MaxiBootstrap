@@ -41,11 +41,15 @@
                     </div>
                     <div class="col-md-12">
                         <p>
-                            <a class="scroll-down"><i class="fa fa-angle-double-down"></i></a>
                             <a class="scroll-down g-signin2" data-onsuccess="onSignIn" style="width:36px;"></a>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p id="toindex" style="display:none;">
                             <a class="scroll-down"><i class="fa fa-angle-double-down"></i></a>
                         </p>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -56,11 +60,14 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     @Scripts.Render("~/bundles/jquery")
     <script>
-        $(window).on("load", function () { $("#id_token").val(""); });
+        $(window).on("load", function () {
+            $("#toindex").fadeOut();
+            $("#toindex").click(function () { $("#frm").submit(); });
+        });
         function onSignIn(googleUser) {
             $("#id_token").val("");
             $("#id_token").val(googleUser.getAuthResponse().id_token);
-            if ($("#id_token").val() != "") { $("#frm").submit(); }
+            if ($("#id_token").val() != "") { $('#toindex').fadeIn(); }
         }
     </script>
 </body>
