@@ -1,10 +1,4 @@
-﻿@using MaxiBootstrap.Models;
-@{
-    var mus = HttpContext.Current.getLoginUser();
-    var isR = true;
-    if (mus == null)
-    { Response.Redirect($"~/{CsProp.isWeb_Controllers}/{CsProp.isWeb_LoginViews}"); isR = false; }
-}
+﻿@{var mcu = UnobtrusiveSession.UserProfile;}
 <!DOCTYPE html>
 <html lang="zh-tw">
 <head>
@@ -33,37 +27,23 @@
             </div>
             <ul id="main-menu">
                 @{
-                    if (mus != null)
+                    using (var db = CsFunc.DBExtend())
                     {
-
-                        using (var db = CsFunc.DBExtend())
+                        var liup = db.SYS_M_Url.Where(g => g.cenable && (g.cisnonauth || db.SYS_R_Auth.FirstOrDefault(x => x.cenable && x.caccountseq == mcu.cseq && x.curlseq == g.cseq) != null)).ToArray();
+                        foreach (var i in liup.Where(g => g.cupseq == -1).OrderBy(s => s.csort))
                         {
-                            var liup = db.SYS_M_Url.Where(g => g.cenable && (g.cupseq < 0 || db.SYS_R_Auth.FirstOrDefault(x => x.cenable && x.caccountseq == mus.cseq && x.curlseq == g.cseq) != null)).ToArray();
-                            /*頁面權限判斷*/
-                            if (isR)
-                            {
-                                var ControllerName = this.ViewContext.ControllerName();
-                                var ActionName = this.ViewContext.ActionName();
-                                if (liup.FirstOrDefault(g => g.ccontrollers.ToStringUpper() == ControllerName && g.cview.ToStringUpper() == ActionName) == null)
-                                {
-                                    Response.Redirect($"~/{CsProp.isWeb_Controllers}/{CsProp.isWeb_IndexViews}?{CsProp.isWeb_Title}={Server.UrlEncode("無此路徑")}");
-                                }
-                            }
-                            foreach (var i in liup.Where(g => g.cenable && new[] { -1, 0 }.Contains(g.cupseq)).OrderBy(s => s.csort))
+                            <li class="menu-item scroll">
+                                <a href="@(Url.Content($"~/{i.ccontrollers}/{i.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(i.cname)}"))">﹎&nbsp;@(i.cname)&nbsp;﹎</a>
+                            </li>
+                            foreach (var g in liup.Where(g => g.cupseq == i.cseq).OrderBy(s => s.csort))
                             {
                                 <li class="menu-item scroll">
-                                    <a href="@(Url.Content($"~/{i.ccontrollers}/{i.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(i.cname)}"))">﹎&nbsp;@(i.cname)&nbsp;﹎</a>
-                                </li>
-                                foreach (var g in liup.Where(g => g.cenable && g.cupseq == i.cseq).OrderBy(s => s.csort))
-                                {
-                                    <li class="menu-item scroll">
-                                        <a href="@(Url.Content($"~/{g.ccontrollers}/{g.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(g.cname)}"))">@(g.cname)</a>
-                                    </li>
-                                }
-                                <li id="menu-item-text" class="menu-item scroll">
-                                    <a></a>
+                                    <a href="@(Url.Content($"~/{g.ccontrollers}/{g.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(g.cname)}"))">@(g.cname)</a>
                                 </li>
                             }
+                            <li id="menu-item-text" class="menu-item scroll">
+                                <a></a>
+                            </li>
                         }
                     }
                 }
@@ -111,7 +91,7 @@
     @RenderSection("scripts", required: false)
     <script>
         $(window).on("load", function () {
-            $.post("@Url.Content("~/Select/S_Stock")").done(function (d) {
+            @*$.post("@Url.Content("~/Select/S_Stock")").done(function (d) {
                 if (!d.length) { return; }
                 for (var i in d) {
                     var gx = d[i].cseq;
@@ -121,7 +101,7 @@
                         if (qa != "" && $.isNumeric(qa) && cno.length) { $.post("@Url.Content("~/Select/U_Stock")", { cno: cno[3], qa: qa }); }
                     });
                 }
-            });
+            });*@
         });
     </script>
 </body>

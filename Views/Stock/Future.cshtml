@@ -18,7 +18,9 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Content("~/Stock/_Future_S")",
-                success: function (d) { $("#dvtable").html(d); }
+                success: function (d) {
+                    $("#dvtable").html(d);
+                }
             });
         });
     </script>

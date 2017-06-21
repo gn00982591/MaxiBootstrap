@@ -1,6 +1,5 @@
 ﻿
 @{Layout = null;}
-@using MaxiBootstrap.Models;
 <!DOCTYPE html>
 <html lang="zh-tw">
 <head>
@@ -14,11 +13,12 @@
     <meta name="description" content="Maxi Bootstrap" />
     @Styles.Render("~/Content/logincss")
     <link href="~/Content/way.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Scripts/vegas-2.4.0/vegas.min.css">
     <meta name="google-signin-client_id" content="@(CsProp.isOAuth_ClientID)">
 </head>
 <body>
     <div class="container-fluid">
-        <div class="coming-soon">
+        <div id="container-fluid" class="coming-soon">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 shadow">
@@ -35,9 +35,10 @@
                             <p>&nbsp;&nbsp;至於為什麼叫「機車物語」？</p>
                             <p>&nbsp;&nbsp;平常使用機車代步，過程冗長，不由得會想東想西。想碼田的規劃、左前方騎士的作為、紅綠燈的發想…諸如此類，天馬行空的內心小劇場。</p>
                         </div>
-                        <form id="frm" name="frm" method="post">
+                        <form id="frm">
                             <input type="hidden" name="id_token" id="id_token" />
                         </form>
+                        <form id="frmauth" name="frmauth" method="post"></form>
                     </div>
                     <div class="col-md-12">
                         <p>
@@ -46,10 +47,9 @@
                     </div>
                     <div class="col-md-12">
                         <p id="toindex" style="display:none;">
-                            <a class="scroll-down"><i class="fa fa-angle-double-down"></i></a>
+                            <a class="scroll-down"><i class="fa fa-google-plus"></i></a>
                         </p>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -59,12 +59,29 @@
     </div>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/vegas-2.4.0/vegas.min.js"></script>
+    @*不拉出來，容易被Cache*@
+    <script src="~/Scripts/jquery.ext.js" type="text/javascript"></script>
     <script>
         $(window).on("load", function () {
             $("#toindex").fadeOut();
-            $("body", document).css("background-image",'url(@Url.Content("~/Content/images/cssLgoinBg.jpg"))');
-            $("#toindex").click(function () { $("#frm").submit(); });
+            /*登入*/
+            $("#toindex").click(function () {
+                $.post("https://www.googleapis.com/oauth2/v3/tokeninfo", $("#frm").serializeobject())
+                    .done(function (q) {
+                        if ($.isEmptyObject(q)) { return; }
+                        var frmauth = $("#frmauth");
+                        for (var i in q) { frmauth.append($("<input/>", { "type": "hidden", "name": i, "value": q[i] })); }
+                        frmauth.submit();
+                    });
+            });
+            /*背景*/
+            $("#container-fluid").vegas({
+                animation: 'random',
+                slides: [{ src: '@(Url.Content("~/Content/images/cssLgoinBg.jpg"))' }]
+            });
         });
+
         function onSignIn(googleUser) {
             $("#id_token").val("");
             $("#id_token").val(googleUser.getAuthResponse().id_token);

@@ -1,8 +1,8 @@
 ﻿html, body {
     margin: 0;
     padding: 0;
-    /*background: #000 url(images/cssLgoinBg.jpg) center center fixed no-repeat;*/
-    background: #000 center center fixed no-repeat;    
+    /*background: #000 url(/Content/images/cssLgoinBg.jpg) center center fixed no-repeat;*/
+    background: #000 center center fixed no-repeat;
     -moz-background-size: cover;
     background-size: cover;
     height: 100%;
