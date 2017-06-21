@@ -62,27 +62,7 @@
                 </div>
             </article>
         </section><!-- #main-content -->
-        <!-- Footer -->
-        <section id="footer">
-            <!-- Go to Top -->
-            <div id="go-to-top" onclick="scroll_to_top();">
-                <span class="icon glyphicon glyphicon-chevron-up"></span>
-            </div>
-            <ul class="social-icons">
-                <li>
-                    <a href="#" target="_blank" title="Facebook"><img src="/Content/twilli/facebook.png" alt="Facebook"></a>
-                </li>
-                <li>
-                    <a href="#" target="_blank" title="Twitter"><img src="/Content/twilli/twitter.png" alt="Twitter"></a>
-                </li>
-                <li>
-                    <a href="#" target="_blank" title="Google+"><img src="/Content/twilli/googleplus.png" alt="Google+"></a>
-                </li>
-            </ul>
-            <!-- copyright text -->
-            <div class="footer-text-line">&copy; Copy 2017-@(DateTime.Now.ToTwDateTime().Year) MaximusChang</div>
-        </section>
-        <!-- end: Footer -->
+        @{Html.RenderPartial("~/Views/PARTVIEW/_CopyRight.cshtml"); }
     </div><!-- #outer-container -->
     <!-- end: Outer Container -->
     @Scripts.Render("~/bundles/jquery")
