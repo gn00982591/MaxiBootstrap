@@ -1,29 +1,51 @@
 ﻿@*統計*@
-<article id="grid" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg2.jpg">
-    <div class="content-wrapper clearfix">
-        <div class="col-sm-11 col-md-10 pull-right">
-            <h1 class="section-title">@{Html.RenderPartial("~/Views/PARTVIEW/_Title.cshtml"); }</h1>
-            <section id="dvtable" class="grid row clearfix clearfix-for-2cols">
-            </section>
-            ◆ 成本包含累計息。
+@using MaxiBootstrap.Models;
+@model IEnumerable<Future_S>
+    <article id="grid" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg2.jpg">
+        <div class="content-wrapper clearfix">
+            <div class="col-sm-11 col-md-10 pull-right">
+                <h1 class="section-title">@{Html.RenderPartial("~/Views/PARTVIEW/_Title.cshtml"); }</h1>
+                <section class="grid row clearfix clearfix-for-2cols">
+                    @foreach (var i in Model)
+                    {
+                        <div class="grid-item col-md-6">
+                            <div class="item-content clearfix">
+                                <span class="icon">@(i.cno)</span>
+                                <div class="text-content">
+                                    <h5>@(i.cname)</h5>
+                                    <p>
+                                        庫存(股)：@(i.cqty)
+                                        <br />
+                                        <span style="color:@(i.cincom.Contains("-") ? "green" : "red");">損益：@(i.cincom)</span>
+                                        <br />
+                                        成本：@(i.ccost)
+                                        <br />
+                                        累計息：@(i.cins)
+                                        <br />
+                                        均價：@(i.cavg)
+                                        <br />
+                                        收價：@(i.camount)
+                                        <br />
+                                        計息日：@(i.cinsdt)
+                                        <br />
+                                        現值：@(i.cvalue)
+                                        <br />
+                                        收價日：@(i.cpricedt)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </section>
+                ◆ 成本包含累計息。
+            </div>
         </div>
-    </div>
-</article>
-@section scripts {
-    <script>
-        $(window).on("load", function () {
-            @*$.post("@Url.Content("~/Stock/_Future_S")").done(function (d) {
-                $("#dvbug").text(JSON.stringify(d));
-            });*@
-            $.ajax({
-                type: "POST",
-                url: "@Url.Content("~/Stock/_Future_S")",
-                success: function (d) {
-                    $("#dvtable").html(d);
-                }
+    </article>
+    @section scripts {
+        <script>
+            $(window).on("load", function () {
             });
-        });
-    </script>
-}
+        </script>
+    }
 
 

@@ -23,8 +23,21 @@ $(window).on("load", function () {
     /*ajax 全域設定*/
     $.ajaxSetup({ "global": true });
     $(document)
-        .ajaxComplete(function (event, xhr, settings) { /*setTimeout(function () { $.unblockUI(); }, 100);*/ })
-        .ajaxSuccess(function () { /*$("#debug").text("");*/ })
+        .ajaxStart(function () {
+            $.blockUI({
+                cursorReset: "wait",
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#fff',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .3,
+                    color: '#000'
+                }
+            });
+        })
+        .ajaxStop($.unblockUI)
         .ajaxError(function (event, jqxhr, settings, thrownError) {
             $("#dvbug").text(jqxhr.responseText);
             location.href = "#dverror";
