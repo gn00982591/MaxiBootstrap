@@ -934,6 +934,7 @@ h6 {
 
     #main-content .grid .text-content {
         display: block;
+        font-weight: bold;
         padding-left: 25%;
     }
 

@@ -32,13 +32,14 @@
                         var liup = db.SYS_M_Url.Where(g => g.cenable && (g.cisnonauth || db.SYS_R_Auth.FirstOrDefault(x => x.cenable && x.caccountseq == mcu.cseq && x.curlseq == g.cseq) != null)).ToArray();
                         foreach (var i in liup.Where(g => g.cupseq == -1).OrderBy(s => s.csort))
                         {
+                            var lido = liup.Where(g => g.cupseq == i.cseq);
                             <li class="menu-item scroll">
-                                <a href="@(Url.Content($"~/{i.ccontrollers}/{i.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(i.cname)}"))">﹎&nbsp;@(i.cname)&nbsp;﹎</a>
+                                <a href='@(lido.Count()>1?"#": Url.Content($"~/{i.ccontrollers}/{i.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(i.cname)}"))'>﹎&nbsp;@(i.cname)&nbsp;﹎</a>
                             </li>
-                            foreach (var g in liup.Where(g => g.cupseq == i.cseq).OrderBy(s => s.csort))
+                            foreach (var g in lido.OrderBy(s => s.csort))
                             {
                                 <li class="menu-item scroll">
-                                    <a href="@(Url.Content($"~/{g.ccontrollers}/{g.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(g.cname)}"))">@(g.cname)</a>
+                                    <a href='@(Url.Content($"~/{g.ccontrollers}/{g.cview}?{CsProp.isWeb_Title}={Server.UrlEncode(g.cname)}"))'>@(g.cname)</a>
                                 </li>
                             }
                             <li id="menu-item-text" class="menu-item scroll">
@@ -78,8 +79,21 @@
                     iscloseblockui = true;
                     $.post("@Url.Content("~/Select/S_TWSE")", { cno: d[i].cno }).done(function (q) {
                         var hq = $(q);
-                        var cno = hq.find("#csvTitle2").text().split(" ");
-                        if (cno.length) { $.post("@Url.Content("~/Select/U_Stock")", { cno: cno[1], qa: $.division($.addition(hq.find("#csvTable2 td:eq(0)").text(), hq.find("#csvTable2 td:eq(2)").text()), 2) }); }
+                        var cno = hq.find("#csvTitle2").text().split(" "),
+                            csv = hq.find("#csvTable2 td");
+                        if (cno.length) {
+                            var indt = csv.eq(5).text().replace(/年|月|日/g, "/");
+                            if (Date.parse(indt)) {
+                                indt = new Date(indt);
+                                indt = $.addition(indt.getFullYear(), 1911) + "/" + $.addition(indt.getMonth(), 1) + "/" + indt.getDate();
+                            } else { indt = null; }
+                            $.post("@Url.Content("~/Select/U_Stock")", {
+                                cno: cno[1],
+                                cname: cno[2],
+                                camount: $.division($.addition(csv.eq(0).text(), csv.eq(2).text()), 2),
+                                cinsdt: indt
+                            });
+                        }
                     });
                 }
             });
