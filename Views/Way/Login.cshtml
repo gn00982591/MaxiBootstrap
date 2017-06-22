@@ -6,40 +6,8 @@
 <p class="shadow">&nbsp;&nbsp;</p>
 <p class="shadow">&nbsp;&nbsp;至於為什麼叫「機車物語」？</p>
 <p class="shadow">&nbsp;&nbsp;平常使用機車代步，過程冗長，不由得會想東想西。想碼田的規劃、左前方騎士的作為、紅綠燈的發想…諸如此類，天馬行空的內心小劇場。</p>
-<form id="frm">
-    <input type="hidden" name="id_token" id="id_token" />
-</form>
-<form id="frmauth" name="frmauth" method="post"></form>
-<div class="col-md-12">
-    <p>
-        <a class="scroll-down g-signin2" data-onsuccess="onSignIn" style="width:36px;"></a>
-    </p>
-</div>
 <div id="toindex" class="col-md-12">
     <p style="display:none;">
         <a class="scroll-down"><i class="fa fa-google-plus"></i></a>
     </p>
 </div>
-@section scripts {
-    <script>
-        $(window).on("load", function () {
-            $("#toindex p").fadeOut();
-            /*登入*/
-            $("#toindex").click(function () {
-                $.post("https://www.googleapis.com/oauth2/v3/tokeninfo", $("#frm").serializeobject())
-                    .done(function (q) {
-                        if ($.isEmptyObject(q)) { return; }
-                        var frmauth = $("#frmauth");
-                        for (var i in q) { frmauth.append($("<input/>", { "type": "hidden", "name": i, "value": q[i] })); }
-                        frmauth.submit();
-                    });
-            });
-        });
-
-        function onSignIn(googleUser) {
-            $("#id_token").val("");
-            $("#id_token").val(googleUser.getAuthResponse().id_token);
-            if ($("#id_token").val() != "") { $('#toindex p').fadeIn(); }
-        }
-    </script>
-}                

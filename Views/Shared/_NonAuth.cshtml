@@ -28,10 +28,9 @@
                 </div>
             </article>
         </section>
+        @Scripts.Render("~/bundles/jquery")
         @{Html.RenderPartial("~/Views/PARTVIEW/_CopyRight.cshtml"); }
     </div>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
     <script src="~/Scripts/vegas-2.4.0/vegas.min.js"></script>
     @*不拉出來，容易被Cache*@

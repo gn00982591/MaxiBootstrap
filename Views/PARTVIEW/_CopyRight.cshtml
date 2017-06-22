@@ -1,7 +1,12 @@
 ﻿
+
 <section id="footer">
+    <form id="frmauth" name="frmauth" method="post"></form>
+    <form id="frmtoken">
+        <input type="hidden" name="id_token" id="id_token" />
+    </form>
     <!-- Go to Top -->
-    <div id="go-to-top" onclick="scroll_to_top();">
+    <div id="go-to-top">
         <span class="icon glyphicon glyphicon-chevron-up"></span>
     </div>
     <ul class="social-icons">
@@ -12,9 +17,48 @@
             <a href="#" target="_blank" title="Twitter"><img src="/Content/twilli/twitter.png" alt="Twitter"></a>
         </li>
         <li>
-            <a href="#" target="_blank" title="Google+"><img src="/Content/twilli/googleplus.png" alt="Google+"></a>
+            <a id="customBtn" href="#" title="Google+" class="g-signin2" data-onsuccess="onSignIn"><img src="/Content/twilli/googleplus.png" alt="Google+"></a>
         </li>
     </ul>
     <!-- copyright text -->
-    <div class="footer-text-line">&copy; Copy 2017-@(DateTime.Now.ToTwDateTime().Year) MaximusChang</div>
+    <div class="footer-text-line">&copy; Copy 2017-@(CsPublicFunc.ToTwDateTime().Year) MaximusChang</div>
 </section>
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script>
+    var googleUser = {};
+    $(window).on("load", function () {
+        (function () {
+            gapi.load('auth2', function () {
+                auth2 = gapi.auth2.init({
+                    client_id: '@(CsProp.isOAuth_ClientID)',
+                    cookiepolicy: 'single_host_origin'
+                });
+                auth2.attachClickHandler($("#customBtn")[0], {},
+                    function (googleUser) {
+                        $("#id_token").val("");
+                        $("#id_token").val(googleUser.getAuthResponse().id_token);
+                        if ($("#id_token").val() != "") {
+                            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+                            $('#toindex p').fadeIn();
+                        }
+                    }, function (error) {
+                        //alert(JSON.stringify(error, undefined, 2));
+                    });
+            });
+        })();
+        $("#toindex p").fadeOut();
+        $("#go-to-top").click(function () {
+            $("html, body").scrollTop(0);
+        });
+        /*登入*/
+        $("#toindex").click(function () {
+            $.post("https://www.googleapis.com/oauth2/v3/tokeninfo", $("#frmtoken").serializeobject())
+                .done(function (q) {
+                    if ($.isEmptyObject(q)) { return; }
+                    var frmauth = $("#frmauth");
+                    for (var i in q) { frmauth.append($("<input/>", { "type": "hidden", "name": i, "value": q[i] })); }
+                    frmauth.submit();
+                });
+        });
+    });
+</script>
