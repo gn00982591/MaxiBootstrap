@@ -71,17 +71,18 @@
     @RenderSection("scripts", required: false)
     <script>
         $(window).on("load", function () {
-            @*$.post("@Url.Content("~/Select/S_Stock")").done(function (d) {
+            iscloseblockui = true;
+            $.post("@Url.Content("~/Select/S_Stock")").done(function (d) {
                 if (!d.length) { return; }
                 for (var i in d) {
-                    var gx = d[i].cseq;
+                    iscloseblockui = true;
                     $.post("@Url.Content("~/Select/S_TWSE")", { cno: d[i].cno }).done(function (q) {
-                        var qa = $(q).find(".til_2:contains(證券概況)").parents("table:eq(0)").find("tr:eq(2) td:eq(1)").text();
-                        var cno = $(q).find(".til_2:contains(證券概況)").text().split(" ");
-                        if (qa != "" && $.isNumeric(qa) && cno.length) { $.post("@Url.Content("~/Select/U_Stock")", { cno: cno[3], qa: qa }); }
+                        var hq = $(q);
+                        var cno = hq.find("#csvTitle2").text().split(" ");
+                        if (cno.length) { $.post("@Url.Content("~/Select/U_Stock")", { cno: cno[1], qa: $.division($.addition(hq.find("#csvTable2 td:eq(0)").text(), hq.find("#csvTable2 td:eq(2)").text()), 2) }); }
                     });
                 }
-            });*@
+            });
         });
     </script>
 </body>
