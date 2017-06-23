@@ -25,31 +25,24 @@
 </section>
 <script src="https://apis.google.com/js/api:client.js"></script>
 <script>
-    var googleUser = {};
     $(window).on("load", function () {
-        (function () {
-            gapi.load('auth2', function () {
-                auth2 = gapi.auth2.init({
-                    client_id: '@(CsProp.isOAuth_ClientID)',
-                    cookiepolicy: 'single_host_origin'
-                });
-                auth2.attachClickHandler($("#customBtn")[0], {},
-                    function (googleUser) {
-                        $("#id_token").val("");
-                        $("#id_token").val(googleUser.getAuthResponse().id_token);
-                        if ($("#id_token").val() != "") {
-                            $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-                            $('#toindex p').fadeIn();
-                        }
-                    }, function (error) {
-                        //alert(JSON.stringify(error, undefined, 2));
-                    });
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                client_id: '@(CsProp.isOAuth_ClientID)',
+                cookiepolicy: 'single_host_origin'
             });
-        })();
-        $("#toindex p").fadeOut();
-        $("#go-to-top").click(function () {
-            $("html, body").scrollTop(0);
+            auth2.attachClickHandler($("#customBtn")[0], {},
+                function (googleUser) {
+                    $("#id_token").val("");
+                    $("#id_token").val(googleUser.getAuthResponse().id_token);
+                    if ($("#id_token").val() != "") {
+                        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+                        $('#toindex p').fadeIn();
+                    }
+                });
         });
+        $("#toindex p").fadeOut();
+        $("#go-to-top").click(function () { $("html, body").scrollTop(0); });
         /*登入*/
         $("#toindex").click(function () {
             $.post("https://www.googleapis.com/oauth2/v3/tokeninfo", $("#frmtoken").serializeobject())

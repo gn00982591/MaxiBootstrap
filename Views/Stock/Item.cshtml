@@ -1,1 +1,55 @@
-﻿@*股票維護*@
+﻿@*維護*@
+<article id="contact" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg4.jpg">
+    <div class="content-wrapper clearfix">
+        <h1 class="section-title">@{Html.RenderPartial("~/Views/PARTVIEW/_Title.cshtml"); }</h1>
+        <div class="contact-details col-sm-5 col-md-3">
+            <p>
+                123A,
+                <br />Molestie Lorem Avenue,
+                <br />Aliquam
+                <br />AAA0010
+            </p>
+            <p>Tel: (+20) 21 301 524</p>
+            <p>
+                <a href="mailto:info@loremipsum.com">info@loremipsum.com</a>
+            </p>
+        </div>
+        <div class="col-sm-7 col-md-9">
+            <form id="frmupdate" class="form-style validate-form clearfix">
+                <div class="col-md-6 wow zoomInDown"  data-wow-delay="0.2s">
+                    <div class="form-group">
+                        <input type="text" class="text-field form-control" required data-validation-type="string" id="frm-cname" placeholder="股票名稱" name="cname">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="text-field form-control " required data-validation-type="string" id="frm-cno" placeholder="股票代號" name="cno">
+                    </div>
+                    <div class="form-group">
+                        <img src="/Content/twilli/loader-form.GIF" class="form-loader">
+                        <button type="button" id="btnupdate" class="btn btn-sm btn-outline-inverse">確認</button>
+                        <button type="reset" class="btn btn-sm btn-outline-inverse">重置</button>
+                    </div>
+                    <div class="form-group form-general-error-container"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</article>
+@section scripts {
+    <script>
+        $(window).on("load", function () {
+            $("#frmupdate").validate({
+                errorPlacement: function (error, element) {
+                    var $dv = $(element).closest("div.form-group");
+                    $dv.find("div.alert").remove();
+                    $dv .append($("<div/>").addClass("alert").css("display", "block").append(error));
+                },
+                success: function (label, element) {
+                    $(element).closest("div.form-group").find("div.alert").remove();
+                }
+            });
+            $("#btnupdate").click(function () {
+                $("#frmupdate").valid();
+            });
+        });
+    </script>
+}
