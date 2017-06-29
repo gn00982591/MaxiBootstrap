@@ -1,7 +1,7 @@
 ﻿@*統計*@
 @using MaxiBootstrap.Models;
 @model IEnumerable<Future_S>
-<article id="grid" class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg2.jpg">
+<article class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg2.jpg">
     <div class="content-wrapper clearfix">
         <div class="col-sm-11 col-md-10 pull-right">
             <h1 class="section-title">@{Html.RenderPartial("~/Views/PARTVIEW/_Title.cshtml"); }</h1>
@@ -16,7 +16,11 @@
                                 <p>
                                     庫存(股)：@(i.cqty)
                                     <br />
-                                    <span style="color:@(i.cincom.Contains("-") ? "green" : "red");">損益：@(i.cincom)</span>
+                                    獲利率：
+                                    <span style="color:@(i.cincompercent.Contains("-") ? "green" : "red");">@(i.cincompercent)</span>
+                                    <br />
+                                    損益：
+                                    <span style="color:@(i.cincom.Contains("-") ? "green" : "red");">@(i.cincom)</span>
                                     <br />
                                     成本：@(i.ccost)
                                     <br />

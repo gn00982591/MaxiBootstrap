@@ -1292,23 +1292,34 @@ h6 {
         transition: all 0.4s;
     }
 
-        .form-style input.text-field::-webkit-input-placeholder,
-        .form-style input.text-field:-moz-placeholder,
-        .form-style input.text-field::-moz-placeholder,
-        .form-style input.text-field:-ms-input-placeholder {
-            color: #fff !important;
-            font-weight: bold;
-        }
+    .form-style .checkbox-field input {
+        width: 30px;
+        height: 30px;
+        vertical-align: bottom;
+        cursor: pointer;
+    }
 
-        .form-style input.text-field:focus,
-        .form-style textarea:focus {
-            color: #000;
-            background: #fff;
-            border-color: #fff;
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-        }
+    .form-style .checkbox-field label {
+        cursor: pointer;
+    }
+
+    .form-style input.text-field::-webkit-input-placeholder,
+    .form-style input.text-field:-moz-placeholder,
+    .form-style input.text-field::-moz-placeholder,
+    .form-style input.text-field:-ms-input-placeholder {
+        color: #fff !important;
+        font-weight: bold;
+    }
+
+    .form-style input.text-field:focus,
+    .form-style textarea:focus {
+        color: #000;
+        background: #fff;
+        border-color: #fff;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
 
     .form-style textarea {
         height: 125px;

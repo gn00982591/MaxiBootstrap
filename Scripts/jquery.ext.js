@@ -41,22 +41,70 @@
     });
     /*by element*/
     $.fn.extend({
+        /*清除元件的val()的空白*/
+        "totrim": function () { return this.each(function () { var t = $(this); t.val($.trim(t.val())); }); },
+        /*清除元件的val()的空白*/
+        "va": function () {
+            var t = $(this);
+            t.validate({
+                errorElement: "div",
+                errorPlacement: function (error, element) {
+                    var $dv = $(element).closest("div.form-group");
+                    $dv.find("div.alert").remove();
+                    if ($(error).text() != "") { $dv.append($(error).addClass("alert").css("display", "block")); }
+                },
+                success: function (label, element) {
+                    $(element).closest("div.form-group").find("div.alert").remove();
+                }
+            });
+            return t;
+        },
         /*form元件轉object*/
         "serializeobject": function () {
             var o = {};
-            $(this).find('input[type="hidden"], input[type="date"], input[type="number"], input[type="text"], input[type="password"], input[type="checkbox"], input[type="radio"], select ,textarea').each(function () {
-                var $th = $(this)
-                if (this.name === null || this.name === undefined || this.name === '') { return; }
-                var elemValue = '';
-                if ($th.is('select')) { elemValue = $th.find('option:selected').val(); }
-                else if ($th.is('input[type="checkbox"]') || $th.is('input[type="radio"]')) { elemValue = $th.is(":checked"); }
-                else { elemValue = this.value; }
-                $(o).prop(this.name, elemValue);
+            $(this).find("[name]").each(function (i) {
+                var ths = $(this);
+                if (ths.is(":checkbox, :radio")) { $(o).prop(this.name, $ths.is(":checked")); }
+                else if (ths.is(":input")) { $(o).prop(this.name, ths.val()); }
+                else if (ths.is("select")) { $(o).prop(this.name, ths.find(':selected').val()); }
             });
             return o;
         },
     });
 })(jQuery);
+
+/*validator中文*/
+$.extend($.validator.messages, {
+    required: "必填!!!",
+    remote: "資料格式錯誤!!!",
+    email: "電子郵件格式錯誤!!!",
+    url: "網址格式錯誤!!!",
+    date: "日期格式錯誤!!!",
+    dateISO: "日期(ISO)格式錯誤!!!",
+    number: "請輸入數字!!!",
+    digits: "請輸入整數!!!",
+    creditcard: "信用卡號格式錯誤!!!",
+    equalTo: "輸入資料不相同，請重複再輸入一次!!!",
+    accept: "請輸入有效的後綴字串!!!",
+    maxlength: jQuery.validator.format("需小於 {0} 字元的資料內容!!!"),
+    minlength: jQuery.validator.format("需大於 {0} 字元的資料內容!!!"),
+    rangelength: jQuery.validator.format("請輸入長度介於 {0} 的資料內容!!!"),
+    range: jQuery.validator.format("需介於 {0} 與 {1} 之間!!!"),
+    max: jQuery.validator.format("需小於 {0} !!!"),
+    min: jQuery.validator.format("需大於 {0} !!!")
+});
+$.validator.addMethod("endate", function (value, element) {
+    var str = $.trim(value).replace(/-|\//g, "");
+    return /([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))/.test(str) && Date.parse(str);
+}, "IX0019：日期格式錯誤!!!");
+$.validator.addMethod("ennum", function (value, element) { return this.optional(element) || /^[0-9]+$/.test(value); },
+    "IX0021：請輸入數字!!!");
+$.validator.addMethod("enstring", function (value, element) { return this.optional(element) || /^[A-Za-z0-9]+$/.test(value); },
+    "IX0021：請輸入英文字母或數字!!!");
+$.validator.addMethod("ennumstring", function (value, element) { return this.optional(element) || /^(\d*\D*)/.test(value); },
+    "IX0022：請輸入英文字母或數字!!!");
+$.validator.addMethod("enselected", function (value, element) { return $.trim($(element).find(":selected").val()) != ""; },
+    "IX0023：請選擇資料!!!");
 
 $(window).on("load", function () {
     /*ajax 全域設定*/
