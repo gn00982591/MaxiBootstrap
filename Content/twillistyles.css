@@ -1355,6 +1355,14 @@ h6 {
     font-size: 0.9em;
 }
 
+    #main-content .contact-details .div-data {
+        text-align: left;
+    }
+
+        #main-content .contact-details .div-data div {
+            border-bottom: 1px dotted white;
+        }
+
 @media (min-width: 768px) {
     .form-style input.text-field,
     .form-style textarea {
