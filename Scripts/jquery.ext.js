@@ -41,9 +41,20 @@
     });
     /*by element*/
     $.fn.extend({
+        /*設定表單資料*/
+        "setfrm": function (obj) {
+            var tn = "name";
+            $(this).find("[" + tn + "]").each(function (i) {
+                var ths = $(this);
+                if (ths.is(":checkbox")) { ths.prop("checked", obj[ths[0][tn]]); }
+                else if (ths.is(":input,select")) { ths.val(obj[ths[0][tn]]); }
+                else if (ths.is("td,span")) { ths.text(obj[$(ths).attr(tn)]); }
+            });
+            return $(this);
+        },
         /*清除元件的val()的空白*/
         "totrim": function () { return this.each(function () { var t = $(this); t.val($.trim(t.val())); }); },
-        /*清除元件的val()的空白*/
+        /*輸入時檢核訊息處理*/
         "va": function () {
             var t = $(this);
             t.validate({

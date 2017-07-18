@@ -2,6 +2,13 @@
 <article class="section-wrapper clearfix" data-custom-background-img="/Content/twilli/bg4.jpg">
     <div class="content-wrapper clearfix">
         <h1 class="section-title">@{Html.RenderPartial("~/Views/PARTVIEW/_Title.cshtml"); }</h1>
+        <div class="form-group">
+            股票
+            <input type="text" required class="text-field form-control" maxlength="100" id="frm_cname" placeholder="股票名稱、股票代號" name="cname" />
+        </div>
+        <div class="form-group">
+            <button type="button" id="btnselect" class="btn btn-sm btn-outline-inverse">查詢</button>
+        </div>
         <div class="contact-details col-sm-7 col-md-8">
             <h4>cname</h4>
             <p>
@@ -81,16 +88,19 @@
                 <a href="mailto:info@loremipsum.com">info@loremipsum.com</a>
             </p>
         </div>
-
         <div class="col-sm-5 col-md-4">
             <form id="frmupdate" class="form-style validate-form clearfix wow zoomInDown" data-wow-delay="0.2s">
                 <div class="form-group">
                     股票名稱
-                    <input type="text" required class="text-field form-control" maxlength="100" id="frm-cname" placeholder="股票名稱" name="cname" />
+                    <input type="text" required class="text-field form-control" maxlength="100" id="frm_cname" placeholder="股票名稱" name="cname" />
                 </div>
                 <div class="form-group">
                     股票代號
-                    <input type="text" required class="text-field form-control " maxlength="50" id="frm-cno" placeholder="股票代號" name="cno" />
+                    <input type="text" required class="text-field form-control " maxlength="50" id="frm_cno" placeholder="股票代號" name="cno" />
+                </div>
+                <div class="form-group">
+                    目標(張)
+                    <input type="text" required class="text-field form-control " maxlength="18" id="frm_ctargetqty" placeholder="目標(張)" name="ctargetqty" />
                 </div>
                 <div class="form-group checkbox-field">
                     <input type="checkbox" id="frm-cisonline" name="cisonline" />
